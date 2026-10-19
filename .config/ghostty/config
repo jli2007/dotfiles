@@ -1,0 +1,33 @@
+# ─────────────────────────────────────────────────────────────
+#  Ghostty  ·  https://ghostty.org/docs/config
+#  Check changes with:  ghostty +validate-config
+#  Reload in-app with:  cmd+shift+,
+# ─────────────────────────────────────────────────────────────
+
+# Rose Pine Moon ships with Ghostty; nothing to install.
+# Full list: ghostty +list-themes
+theme = Rose Pine Moon
+
+font-family = JetBrainsMono Nerd Font Mono
+font-size = 15
+
+# Slight transparency + blur behind the window.
+# Set background-opacity = 1 to turn this off entirely.
+background-opacity = 0.92
+background-blur = 20
+
+window-padding-x = 8
+window-padding-y = 6
+
+# Hides the titlebar for a clean edge-to-edge window.
+# This also hides the traffic-light buttons - swap to
+# "transparent" if you want them back.
+macos-titlebar-style = hidden
+
+# Makes option behave as Alt, which nvim and readline expect
+# for alt-based bindings. Without it macOS eats them as
+# special characters.
+macos-option-as-alt = true
+
+mouse-hide-while-typing = true
+window-save-state = always

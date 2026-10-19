@@ -1,0 +1,173 @@
+CHANGELOG
+What these configs change, relative to each tool's stock defaults.
+Anything not listed here is left at its default.
+
+═══════════════════════════════════════════════════════════════
+2026-10-19   initial setup
+═══════════════════════════════════════════════════════════════
+
+INSTALLED
+  tmux 3.8, jq, zsh-autosuggestions, zsh-syntax-highlighting   (homebrew)
+  starship 1.27.0, fzf 0.74.5                                  (~/.local/bin)
+  font-jetbrains-mono-nerd-font                                (homebrew cask)
+
+  Note: this Mac runs macOS 14.6, and homebrew no longer ships prebuilt
+  binaries for it ("no longer builds bottles for this configuration"), so
+  brew compiles everything from source. starship and fzf were installed as
+  official prebuilt release binaries instead, to avoid compiling Rust and Go.
+  brew will not update those two; re-download the release asset to upgrade.
+
+LAYOUT
+  Real files live in ~/dotfiles-public and are symlinked into place:
+    ~/.config/tmux          ~/.config/nvim
+    ~/.config/ghostty       ~/.config/starship.toml
+  Editing either path edits the same file. No rebuild step.
+  ~/.zshrc stays a real file; it sources one block from zsh/dotfiles.zsh.
+  install.sh sets all of this up on a fresh machine. It is idempotent:
+  it only adds what is missing and never overwrites a real file.
+  .gitignore blocks .env, *.pem, *.key, ssh keys, auth.json and .zshrc
+  from ever being committed.
+
+
+───────────────────────────────────────────────────────────────
+TMUX            .config/tmux/tmux.conf
+───────────────────────────────────────────────────────────────
+  prefix              left at the default ctrl+b
+  default-terminal    tmux-256color
+  terminal-features   xterm-ghostty:RGB      enables 24-bit color
+  escape-time         0        was 500ms, which lags Esc in nvim
+  mouse               on       was off
+  base-index          1        was 0; window numbers now match the keys
+  pane-base-index     1        was 0
+  renumber-windows    on       no gaps after closing a window
+  history-limit       50000    was 2000
+  focus-events        on
+  set-clipboard       on       OSC52, so copy works over ssh
+  status-position     top      was bottom
+
+  rebound keys
+    | and -           split right / down      (replaces " and %)
+    |, -, c           open in the current directory, not $HOME
+    h j k l           move between panes
+    H J K L           resize pane, repeatable
+    r                 reload the config
+    copy mode         vi keys; v selects, y copies via pbcopy
+                      mouse drag also copies
+
+  status bar          rose pine moon colors, plain text, no glyphs
+
+
+───────────────────────────────────────────────────────────────
+GHOSTTY         .config/ghostty/config
+───────────────────────────────────────────────────────────────
+  theme                   Rose Pine Moon   (ships with ghostty)
+  font-family             JetBrainsMono Nerd Font Mono
+  font-size               15               was 13
+  background-opacity      0.92             was 1
+  background-blur         20               was false
+  macos-titlebar-style    hidden           was transparent; also hides the
+                                           traffic lights. "transparent"
+                                           puts them back.
+  macos-option-as-alt     true             was off; macOS otherwise eats
+                                           alt-key bindings
+  window-padding-x / y    8 / 6            was 2 / 2
+  mouse-hide-while-typing true             was false
+  window-save-state       always           was default
+
+  Only the exact family "JetBrainsMono Nerd Font Mono" resolves; the name
+  without "Mono" silently falls back to the default font.
+  Validate any edit with:  ghostty +validate-config
+
+
+───────────────────────────────────────────────────────────────
+ZSH             zsh/dotfiles.zsh, sourced from ~/.zshrc
+───────────────────────────────────────────────────────────────
+  ~/.zshrc backed up to ~/.zshrc.backup-20261019-175017
+  The hand-written PROMPT= line is commented out; starship replaces it.
+  Everything is added inside a ">>> dotfiles-public >>>" fence.
+  Delete that fence to revert the shell completely.
+
+  added   starship prompt
+  added   fzf keys: ctrl+r history, ctrl+t files, alt+c cd
+  added   autosuggestions, grey ghost text from history; ctrl+f accepts
+  added   syntax highlighting, sourced last (required order)
+          recolored: stock paints every unrecognised word red, which hits
+          every half-typed line. Plain text is white; a recognised command
+          turns green, so the signal is "it went green", not "it's red".
+  added   alias ..='cd ..'
+
+  Every feature is guarded by an existence check, so a missing tool is
+  skipped instead of erroring on every shell start.
+  Brew paths are hardcoded to /opt/homebrew rather than $(brew --prefix),
+  which would spawn a subprocess on every shell start.
+
+
+───────────────────────────────────────────────────────────────
+STARSHIP        .config/starship.toml
+───────────────────────────────────────────────────────────────
+  Reproduces the old prompt, plus git:
+    jamesli@mbp        username + a literal short machine label
+    directory          truncated to 3 levels, or to the repo root
+    git branch         grey
+    git status         yellow; ! = uncommitted changes
+    command duration   grey, only shown when over 500ms
+    ❯                  green, red when the last command failed
+
+  Colors are explicit hex, NOT the ANSI names "green"/"cyan". The Rose Pine
+  Moon terminal theme remaps the ANSI palette:
+      ANSI green -> #3e8fb0  (blue-teal)
+      ANSI cyan  -> #ea9a97  (salmon)
+      ANSI red   -> #eb6f92  (pink)
+  so asking for "cyan" gets salmon. Hex bypasses the remap:
+      #9ece6a green   #7dcfff cyan   #eb6f92 error
+
+  "mbp" is a literal in the [hostname] format; edit it to taste.
+
+
+───────────────────────────────────────────────────────────────
+NVIM            .config/nvim/
+───────────────────────────────────────────────────────────────
+  leader              space
+  colorscheme         rose-pine moon, italics off, transparent background
+  number              on, with relativenumber
+  signcolumn          always on, so text doesn't shift when git signs appear
+  ignorecase+smartcase, scrolloff 10, undofile on, swapfile off
+  clipboard           shares the system clipboard
+  mouse               on
+
+  keys
+    <leader>f / <leader>s    find files / grep project
+    <leader>b / <leader>/    buffers / search in current file
+    <leader>e                file browser
+    <leader>g                git UI
+    <leader>w                write
+    gd                       goto definition
+    ctrl+h/j/k/l             move between splits
+    Esc                      clear search highlight
+    p over a selection       keeps your clipboard instead of replacing it
+
+  plugins   rose-pine, snacks (picker/notifier/input), oil, neogit,
+            diffview, gitsigns (inline blame), which-key
+            lazy.nvim self-installs on first launch; versions pinned in
+            lazy-lock.json
+
+
+───────────────────────────────────────────────────────────────
+CLAUDE CODE     ~/.claude/settings.json
+───────────────────────────────────────────────────────────────
+  backed up to ~/.claude/settings.json.backup-20261019-175044
+  added   statusLine: shows model name and context % used
+  All 8 pre-existing keys were left untouched.
+  Requires jq. Requires restarting Claude Code to appear.
+
+  This file is edited in place, not symlinked into this repo, because
+  Claude Code rewrites it itself (plugin toggles, consent flags) and that
+  would fight a tracked symlink.
+
+
+───────────────────────────────────────────────────────────────
+HOUSEKEEPING
+───────────────────────────────────────────────────────────────
+  Deleted an empty 0-byte ~/AGENTS.md. Codex walks up parent directories
+  looking for AGENTS.md, so a stray file there would silently apply to
+  every project under the home directory. The real one lives in this repo.

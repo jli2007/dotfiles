@@ -1,0 +1,41 @@
+# https://starship.rs/config/
+
+add_newline = false
+format = "$username$hostname$directory$git_branch$git_status$cmd_duration$line_break$character"
+
+# user@machine, green, same as the old hand-written prompt.
+[username]
+show_always = true
+format = "[$user]($style)"
+style_user = "#9ece6a"   # explicit hex: the theme remaps ANSI "green" to teal
+style_root = "#eb6f92"
+
+# Literal short label instead of the real "Jamess-MBP-2".
+# Change "mbp" here to whatever you want it to read.
+[hostname]
+ssh_only = false
+format = "[@mbp]($style)  "
+style = "#9ece6a"
+
+[directory]
+style = "#7dcfff"   # explicit hex: the theme remaps ANSI "cyan" to salmon
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+format = "[$branch]($style) "
+style = "bright-black"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style)"
+style = "yellow"
+
+[cmd_duration]
+min_time = 500
+format = "[$duration]($style) "
+style = "bright-black"
+
+# White on success (matches the text color), red on failure.
+[character]
+success_symbol = "[❯](#e0def4)"
+error_symbol = "[❯](#eb6f92)"
