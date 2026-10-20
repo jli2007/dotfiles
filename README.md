@@ -1,4 +1,4 @@
-![tmux](tmux.png)
+![terminal](terminal.png)
 
 ## dotfiles
 
@@ -7,7 +7,7 @@ terminal and agent config for macos. real files live here, `~/.config/*` symlink
 setup on a new machine:
 
 ```sh
-git clone <this repo> ~/dotfiles && ~/dotfiles/install.sh
+git clone https://github.com/jli2007/dotfiles.git ~/dotfiles && ~/dotfiles/install.sh
 ```
 
 see `changelog.txt` for every setting that differs from a default.
