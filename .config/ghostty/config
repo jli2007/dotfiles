@@ -9,20 +9,20 @@
 theme = Rose Pine Moon
 
 font-family = JetBrainsMono Nerd Font Mono
-font-size = 15
+font-size = 12
 
 # Slight transparency + blur behind the window.
 # Set background-opacity = 1 to turn this off entirely.
-background-opacity = 0.92
+background-opacity = 0.85
 background-blur = 20
 
 window-padding-x = 8
 window-padding-y = 6
 
-# Hides the titlebar for a clean edge-to-edge window.
-# This also hides the traffic-light buttons - swap to
-# "transparent" if you want them back.
-macos-titlebar-style = hidden
+# "transparent" keeps the titlebar (and the close/minimise/zoom
+# buttons) while letting the background tint through.
+# "hidden" looks cleaner but removes the traffic lights entirely.
+macos-titlebar-style = transparent
 
 # Makes option behave as Alt, which nvim and readline expect
 # for alt-based bindings. Without it macOS eats them as

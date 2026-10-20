@@ -1,0 +1,46 @@
+// fastfetch config. Docs: https://github.com/fastfetch-cli/fastfetch/wiki/Configuration
+//
+// Same look as stock - big logo, bold colored keys - but the modules
+// with very long values are shortened so nothing wraps in a narrow
+// tmux pane. The big logo alone costs ~37 columns, which leaves very
+// little room in a half-width split.
+//
+// Dropped vs stock: Host (the full marketing name is ~58 chars and
+// the only short placeholder is "Mac15,6"), WM Theme, Cursor.
+// The OS and CPU rows already say which machine this is.
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    // stock also adds scaling and physical size. {type} is kept because
+    // it is the only way to tell the laptop screen from an external one
+    // when docked.
+    { "type": "display", "format": "{width}x{height} @ {refresh-rate}Hz [{type}]" },
+    "wm",
+    "theme",
+    // stock lists system AND user fonts
+    { "type": "font",    "format": "{font1}" },
+    "terminal",
+    "cpu",
+    // stock appends [Integrated] / [Discrete]
+    { "type": "gpu",     "format": "{name}" },
+    "memory",
+    "swap",
+    // Not pinned to "/": auto-detect shows real external drives too.
+    // (A pile of rows here means dmgs are still mounted - eject them.)
+    // {size-percentage} already includes the % sign.
+    { "type": "disk",
+      "format": "{size-used} / {size-total} ({size-percentage})" },
+    "battery",
+    "locale",
+    "break",
+    "colors"
+  ]
+}

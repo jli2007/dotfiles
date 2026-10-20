@@ -1,3 +1,5 @@
+![tmux](tmux.png)
+
 ## dotfiles
 
 terminal and agent config for macos. real files live here, `~/.config/*` symlinks point back at them.

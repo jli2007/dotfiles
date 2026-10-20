@@ -62,12 +62,13 @@ GHOSTTY         .config/ghostty/config
 ───────────────────────────────────────────────────────────────
   theme                   Rose Pine Moon   (ships with ghostty)
   font-family             JetBrainsMono Nerd Font Mono
-  font-size               15               was 13
-  background-opacity      0.92             was 1
+  font-size               12               was 13; fits more per pane
+  background-opacity      0.85             was 1; lets the desktop
+                                           wallpaper show through
   background-blur         20               was false
-  macos-titlebar-style    hidden           was transparent; also hides the
-                                           traffic lights. "transparent"
-                                           puts them back.
+  macos-titlebar-style    transparent      left at the default. "hidden" is
+                                           cleaner but removes the close /
+                                           minimise / zoom buttons.
   macos-option-as-alt     true             was off; macOS otherwise eats
                                            alt-key bindings
   window-padding-x / y    8 / 6            was 2 / 2
@@ -94,7 +95,19 @@ ZSH             zsh/dotfiles.zsh, sourced from ~/.zshrc
           recolored: stock paints every unrecognised word red, which hits
           every half-typed line. Plain text is white; a recognised command
           turns green, so the signal is "it went green", not "it's red".
-  added   alias ..='cd ..'
+  added   alias ..='cd ..' and ff='fastfetch'
+
+  SPLIT INTO TWO LAYERS
+    Functional bits load in every terminal: fzf keys, autosuggestions,
+    aliases. Visual bits load in ghostty ONLY: starship, syntax
+    highlighting colors, fastfetch.
+    Why: the prompt colors are 24-bit hex and Terminal.app has no
+    truecolor support - it renders the escapes as garbled highlight
+    blocks. Outside ghostty the prompt falls back to plain ANSI
+    (%F{green}%n@%m%f  %F{cyan}%~%f), which works anywhere.
+    Detection: $GHOSTTY_RESOURCES_DIR / $TERM_PROGRAM. Those are
+    EXPORTED, so tmux panes inherit them - fastfetch additionally
+    checks $TMUX so it does not fire on every split.
 
   Every feature is guarded by an existence check, so a missing tool is
   skipped instead of erroring on every shell start.
@@ -166,8 +179,28 @@ CLAUDE CODE     ~/.claude/settings.json
 
 
 ───────────────────────────────────────────────────────────────
-HOUSEKEEPING
+FASTFETCH       .config/fastfetch/config.jsonc
 ───────────────────────────────────────────────────────────────
-  Deleted an empty 0-byte ~/AGENTS.md. Codex walks up parent directories
-  looking for AGENTS.md, so a stray file there would silently apply to
-  every project under the home directory. The real one lives in this repo.
+  Stock output is 20 rows and its longest values run 55-62 chars. The
+  big apple logo costs ~37 columns, so in a half-width tmux pane the
+  long rows wrap mid-word. Terminals cannot render one command at a
+  smaller font, so the only lever is less text.
+
+  removed   Host        the model string is ~58 chars and the only
+                        short placeholder is "Mac15,6". The title and
+                        OS/CPU rows already identify the machine.
+  removed   WM Theme    always "Multicolor (Dark)" - says nothing
+  removed   Cursor      cursor fill/outline/size - never actionable
+
+  shortened Display     dropped scaling and physical size, kept [type]:
+                        it is the only way to tell the built-in screen
+                        from an external one while docked
+  shortened Font        dropped the user font, kept the system one
+  shortened GPU         dropped core count, clock and [Integrated]
+                        (always integrated on apple silicon)
+  shortened Disk        dropped "- apfs [Read-only]" - both constant on
+                        modern macOS. NOT pinned to "/", so real
+                        external drives still appear. A pile of disk
+                        rows means dmgs are still mounted; eject them.
+
+  Everything else is stock. Longest line is now 83 of 90 columns.
