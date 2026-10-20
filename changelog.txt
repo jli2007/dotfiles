@@ -18,7 +18,7 @@ INSTALLED
   brew will not update those two; re-download the release asset to upgrade.
 
 LAYOUT
-  Real files live in ~/dotfiles-public and are symlinked into place:
+  Real files live in ~/dotfiles and are symlinked into place:
     ~/.config/tmux          ~/.config/nvim
     ~/.config/ghostty       ~/.config/starship.toml
   Editing either path edits the same file. No rebuild step.
@@ -84,7 +84,7 @@ ZSH             zsh/dotfiles.zsh, sourced from ~/.zshrc
 ───────────────────────────────────────────────────────────────
   ~/.zshrc backed up to ~/.zshrc.backup-20261019-175017
   The hand-written PROMPT= line is commented out; starship replaces it.
-  Everything is added inside a ">>> dotfiles-public >>>" fence.
+  Everything is added inside a ">>> dotfiles >>>" fence.
   Delete that fence to revert the shell completely.
 
   added   starship prompt

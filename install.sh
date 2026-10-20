@@ -34,7 +34,7 @@ echo "agent config"
 link "AGENTS.md" "$HOME/.codex/AGENTS.md"
 if [ ! -e "$HOME/.claude/CLAUDE.md" ]; then
   mkdir -p "$HOME/.claude"
-  echo '@~/dotfiles-public/AGENTS.md' > "$HOME/.claude/CLAUDE.md"
+  echo '@~/dotfiles/AGENTS.md' > "$HOME/.claude/CLAUDE.md"
   ok "created ~/.claude/CLAUDE.md importing AGENTS.md"
 else
   skip "~/.claude/CLAUDE.md exists"
@@ -44,16 +44,16 @@ echo
 echo "shell"
 # ~/.zshrc stays a real file (it holds PATH and machine-specific exports);
 # we only append a fenced source block.
-if grep -q '^# >>> dotfiles-public >>>' "$HOME/.zshrc" 2>/dev/null; then
+if grep -q '^# >>> dotfiles >>>' "$HOME/.zshrc" 2>/dev/null; then
   skip "~/.zshrc block already present"
 else
   [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$HOME/.zshrc.backup-$(date +%Y%m%d-%H%M%S)"
   cat >> "$HOME/.zshrc" <<'BLOCK'
 
-# >>> dotfiles-public >>>
+# >>> dotfiles >>>
 # Delete this whole block to fully revert the shell changes.
-[ -f "$HOME/dotfiles-public/zsh/dotfiles.zsh" ] && source "$HOME/dotfiles-public/zsh/dotfiles.zsh"
-# <<< dotfiles-public <<<
+[ -f "$HOME/dotfiles/zsh/dotfiles.zsh" ] && source "$HOME/dotfiles/zsh/dotfiles.zsh"
+# <<< dotfiles <<<
 BLOCK
   ok "appended block to ~/.zshrc (backed up first)"
 fi
